@@ -34,6 +34,15 @@
       \item \code{residuals(type = "working")} is now an error for the
       \code{ordinal} family (the response residual is on the
       category-index scale, so the GLM working residual is not defined)
+      \item \code{ordinal()} now gives an error for links other than
+      \code{"logit"}, \code{"probit"} and \code{"cloglog"}
+      \item an \code{ordinal} response with an empty category (integer
+      codes) or an unused factor level now gives a warning that names it;
+      a character or logical response now gives an error that names the
+      accepted types
+      \item \code{simulate_new()} now supports the \code{ordinal} family;
+      the number of categories comes from \code{newparams$psi}, and each
+      simulation is an ordered factor
     } % itemize
   } % user-visible changes
   \subsection{BUG FIXES}{
@@ -88,6 +97,14 @@
       \code{summary()}, Wald \code{confint()} and \code{emmeans} treat
       user-fixed \code{psi} elements as known constants in the threshold
       standard errors (with every element fixed, the standard errors are 0)
+      \item Variance helpers are implemented for \code{truncated_nbinom1},
+      \code{truncated_genpois}, and \code{truncated_compois}. The generalized Poisson helper supports dispersion at least one. Pearson residuals for all five zero-truncated count families
+      evaluate variance at the untruncated mean while retaining the
+      truncated response mean in the residual (GH #1359, item 5). The help file for these families
+      gives the conditional-moment identity and its relation to
+      Shonkwiler (2016; \doi{10.1016/j.jeconom.2016.09.002}), Scollnik
+      (1998; \doi{10.2143/AST.28.1.519083}), and Huang
+      (2017; \doi{10.1177/1471082X17697749}).
       \item \code{confint(method = "uniroot")} labelled its rows from
       the full parameter list while computing them for the estimated
       parameters, so when a parameter was fixed via \code{map} (including
